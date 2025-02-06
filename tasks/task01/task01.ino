@@ -4,11 +4,11 @@ const uint16_t PERIOD_PIN6 = 500;
 const uint16_t PERIOD_PIN9 = 100;
 const uint16_t PERIOD_PIN10 = 50;
 
-const uint8_t pin3 = 8;
-const uint8_t pin5 = 32;
-const uint8_t pin6 = 64;
-const uint8_t pin9 = 2;
-const uint8_t pin10 = 4;
+const uint8_t PIN_3 = 8;
+const uint8_t PIN_5 = 32;
+const uint8_t PIN_6 = 64;
+const uint8_t PIN_9 = 2;
+const uint8_t PIN_10 = 4;
 
 void setup() {
     DDRD = 0xff;
@@ -25,23 +25,23 @@ void loop() {
     unsigned long now = micros();
 
     if (now - lastTime1 >= PERIOD_PIN3) {
-        PORTD ^= pin3;
+        PORTD ^= PIN_3;
         lastTime1 = now;
     }
     if (now - lastTime2 >= PERIOD_PIN5) {
-        PORTD ^= pin5;
+        PORTD ^= PIN_5;
         lastTime2 = now;
     }
     if (now - lastTime3 >= PERIOD_PIN6) {
-        PORTD ^= pin6;
+        PORTD ^= PIN_6;
         lastTime3 = now;
     }
     if (now - lastTime4 >= PERIOD_PIN9) {
-        PORTB ^= pin9;
+        PORTB ^= PIN_9;
         lastTime4 = now;
     }
     if (now - lastTime5 >= PERIOD_PIN10) {
-        PORTB ^= pin10;
+        PORTB ^= PIN_10;
         lastTime5 = now;
     }
 }
