@@ -1,5 +1,6 @@
 uint8_t intNum;
-const int ITERS_COUNT = 100; 
+const int MARGIN = 2;
+const int ITERS_COUNT = 100 + MARGIN; 
 
 volatile int signalPeriods[ITERS_COUNT];
 volatile int index = 0;
@@ -12,18 +13,18 @@ void setup() {
 }
 
 void loop() {
-  if (index == ITERS_COUNT) {
+  if (index >= ITERS_COUNT) {
     unsigned long sum = 0;
     index = 0;
 
-    for (int i = 0; i < ITERS_COUNT; i++) {
+    for (int i = 0 + MARGIN; i < ITERS_COUNT; i++) {
       sum += signalPeriods[i];
     }
 
     int averagePeriod = sum / ITERS_COUNT;
     float rmsd = 0;
 
-    for (int i = 0; i < ITERS_COUNT; i++) {
+    for (int i = 0 + MARGIN; i < ITERS_COUNT; i++) {
       rmsd += pow(signalPeriods[i] - averagePeriod, 2);
     }
 
@@ -50,7 +51,7 @@ void captureSignal() {
 
   lastTime = currentTime;
 
-  if (index == ITERS_COUNT) {
+  if (index >= ITERS_COUNT) {
     detachInterrupt(intNum);
   }
 }
