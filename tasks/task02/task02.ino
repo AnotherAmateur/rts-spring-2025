@@ -1,9 +1,11 @@
 uint8_t intNum;
+
 const int MARGIN = 2;
-const int ITERS_COUNT = 100 + MARGIN; 
+const int ITERS_COUNT = 100 + MARGIN;
 
 volatile int signalPeriods[ITERS_COUNT];
 volatile int index = 0;
+volatile unsigned long lastTime = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -17,18 +19,18 @@ void loop() {
     unsigned long sum = 0;
     index = 0;
 
-    for (int i = 0 + MARGIN; i < ITERS_COUNT; i++) {
+    for (int i = MARGIN; i < ITERS_COUNT; i++) {
       sum += signalPeriods[i];
     }
 
-    int averagePeriod = sum / ITERS_COUNT;
+    int averagePeriod = sum / (ITERS_COUNT - MARGIN);
     float rmsd = 0;
 
-    for (int i = 0 + MARGIN; i < ITERS_COUNT; i++) {
+    for (int i = MARGIN; i < ITERS_COUNT; i++) {
       rmsd += pow(signalPeriods[i] - averagePeriod, 2);
     }
 
-    rmsd /= ITERS_COUNT;
+    rmsd /= (ITERS_COUNT - MARGIN);
     rmsd = sqrt(rmsd);
 
     Serial.print("Period: ");
@@ -42,13 +44,7 @@ void loop() {
 
 void captureSignal() {
   unsigned long currentTime = micros();
-  static unsigned long lastTime = 0;
-
-  if (lastTime != 0) {
-    signalPeriods[index] = currentTime - lastTime;
-    index++;
-  }
-
+  signalPeriods[index++] = currentTime - lastTime;
   lastTime = currentTime;
 
   if (index >= ITERS_COUNT) {
