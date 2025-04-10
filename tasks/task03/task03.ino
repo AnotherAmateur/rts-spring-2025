@@ -15,6 +15,11 @@ const uint16_t PERIOD_PIN9 = 100;
 const uint16_t PERIOD_PIN10 = 50;
 
 void setup() {
+  *PFS_P104PFS_BY = 0x04; // нулевой бит устанавливает HIGH/LOW, второй - I/O
+  *PFS_P102PFS_BY = 0x04;
+  *PFS_P106PFS_BY = 0x04;
+  *PFS_P303PFS_BY = 0x04;
+  *PFS_P112PFS_BY = 0x04;
 }
 
 void loop() {
@@ -24,37 +29,26 @@ void loop() {
     static unsigned long lastTime4 = 0;
     static unsigned long lastTime5 = 0;
 
-    static bool state3 = false;
-    static bool state5 = false;
-    static bool state6 = false;
-    static bool state9 = false;
-    static bool state10 = false;
-
     unsigned long now = micros();
 
     if (now - lastTime1 >= PERIOD_PIN3) {
-        *PFS_P104PFS_BY = state3 ? 0x04 : 0x05; // первый бит устанавливает HIGH/LOW, третий - I/O
-        state3 = !state3;
+        *PFS_P104PFS_BY ^= 0x01;
         lastTime1 = now;
     }
     if (now - lastTime2 >= PERIOD_PIN5) {
-        *PFS_P102PFS_BY = state5 ? 0x04 : 0x05;
-        state5 = !state5;
+        *PFS_P102PFS_BY ^= 0x01;
         lastTime2 = now;
     }
     if (now - lastTime3 >= PERIOD_PIN6) {
-        *PFS_P106PFS_BY = state6 ? 0x04 : 0x05;
-        state6 = !state6;
+        *PFS_P106PFS_BY ^= 0x01;
         lastTime3 = now;
     }
     if (now - lastTime4 >= PERIOD_PIN9) {
-        *PFS_P303PFS_BY = state9 ? 0x04 : 0x05;
-        state9 = !state9;
+        *PFS_P303PFS_BY ^= 0x01;
         lastTime4 = now;
     }
     if (now - lastTime5 >= PERIOD_PIN10) {
-        *PFS_P112PFS_BY = state10 ? 0x04 : 0x05;
-        state10 = !state10;
+        *PFS_P112PFS_BY ^= 0x01;
         lastTime5 = now;
     }
 }
